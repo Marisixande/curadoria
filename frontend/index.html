@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Curadoria JWT</title>
+</head>
+<body>
+  <div class="formulario">
+      <form id="form">
+        <input type="text" name="name" id="name">
+        <input type="email" name="email" id="email">
+        <input type="password" name="password" id="password">
+      </form>
+    <button onclick="cadastro_usuario()">Cadastrar</button>
+  </div>
+  <p>Já fez o cadastro? Faça login <a href="./login.html">aqui</a></p>
+</body>
+<script>
+ async function cadastro_usuario(){
+    const dados_usuarios = document.getElementById('form');
+    const dados_objeto = Object.fromEntries(new FormData(dados_usuarios));
+    const dados_json = JSON.stringify(dados_objeto);
+    // console.log(dados_json);
+     const req = await fetch(
+      ` http://localhost:3000/auth/register`,
+      {
+        method: 'POST',
+        headers: {
+          "Content-type":"application/json"
+          //"Authorization": "Bearer <token>"
+        },
+        body: dados_json
+      }
+    );
+    if(!req.ok){
+      throw new Error(`Erro ao enviar requisição: ${req.status}`);
+    
+    }
+    const res = await req.json();
+    console.log(res);
+  }
+</script>
+</html>
