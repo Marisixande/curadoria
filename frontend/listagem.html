@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Listagem de itens Curadoria JWT</title>
+</head>
+<body>
+  <div id="listagem">
+    <h1>Itens de curadoria</h1>
+  </div>
+</body>
+<script>
+ async function api_listagem_itens(){
+    const accessToken = localStorage.getItem(`accessToken`)
+    const dados_listagem = document.getElementById('listagem');
+    // console.log(dados_json);
+     const req = await fetch(
+      ` http://localhost:3000/itens`,
+      {
+        method: 'GET',
+        headers: {
+          "Content-type":"application/json",
+          "Authorization": `Bearer ${accessToken}`
+        }
+      }
+    );
+
+    const res = await req.json();
+
+    if(!req.ok){
+      throw new Error(`Erro ao enviar requisição: ${req.status}`);
+    
+    }
+    console.log("deu certo!!:>");
+  }
+  api_listagem_itens()
+</script>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Curadoria JWT</title>
+</head>
+<body>
+  <div class="formulario">
+      <form id="form">
+        <input type="text" name="title" id="title" placeholder="title">
+        <input type="text" name="url" id="url" placeholder="url">
+        <input type="text" name="notes" id="notes" placeholder="notes">
+        <input type="text" name="tags" id="tags" placeholder="tags">
+      </form>
+    <button onclick="cadastro_item()">Cadastrar</button>
+  </div>
+</body>
+<script>
+ async function cadastro_item(){
+    const dados_items = document.getElementById('form');
+    const accessToken = localStorage.getItem(`accessToken`)
+    const dados_objeto = Object.fromEntries(new FormData(dados_items));
+    const dados_json = JSON.stringify(dados_objeto);
+    // console.log(dados_json);
+     const req = await fetch(
+      ` http://localhost:3000/items`,
+      {
+        method: 'POST',
+        headers: {
+           "Content-type":"application/json",
+          "Authorization": `Bearer ${accessToken}`
+        },
+        body: dados_json
+      }
+    );
+   const res = await req.json();
+    console.log(res)
+    if(!req.ok){
+      alert(res.message)
+      throw new Error(`Erro ao enviar requisição: ${req.status}`);
+
+    }
+    localStorage.setItem('accessToken', res.accessToken);
+    console.log(res.accessToken);
+  }
+</script>
+</html>
